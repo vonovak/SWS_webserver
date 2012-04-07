@@ -33,25 +33,22 @@ public class StaticThreadpool {
         @Override
         public void run() {
             Runnable r;
-
-            while (true) {
-                synchronized (queue) {
-                    while (queue.isEmpty()) {
-                        try {
+            try {
+                while (true) {
+                    synchronized (queue) {
+                        while (queue.isEmpty()) {
                             queue.wait();
-                        } catch (InterruptedException ignored) {
-                            System.out.println(ignored);
                         }
+                        r = queue.removeFirst();
                     }
-                    r = queue.removeFirst();
-                }
-              
-                try {
                     r.run();
-                } catch (RuntimeException e) {
-                    System.out.println("thread lost!");
                 }
+
+            } catch (InterruptedException ignored) {
+            } catch (RuntimeException e) {
+                System.out.println("thread lost!");
             }
+
         }
     }
 }
