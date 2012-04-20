@@ -6,16 +6,16 @@ import java.util.LinkedList;
 
 public class StaticThreadpool {
 
-    private final int nThreads;
+    private final int numOfThreads;
     private final PoolWorker[] threads;
     private final LinkedList<Runnable> queue;
 
-    public StaticThreadpool(int nThreads) {
-        this.nThreads = nThreads;
+    public StaticThreadpool(int numOfThreads) {
+        this.numOfThreads = numOfThreads;
         queue = new LinkedList<Runnable>();
-        threads = new PoolWorker[nThreads];
+        threads = new PoolWorker[numOfThreads];
 
-        for (int i = 0; i < nThreads; i++) {
+        for (int i = 0; i < numOfThreads; i++) {
             threads[i] = new PoolWorker();
             threads[i].start();
         }
@@ -24,7 +24,7 @@ public class StaticThreadpool {
     public void execute(Runnable r) {
         synchronized (queue) {
             queue.addLast(r);
-            queue.notify();
+            queue.notifyAll();
         }
     }
 

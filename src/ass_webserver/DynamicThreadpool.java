@@ -28,7 +28,7 @@ public class DynamicThreadpool {
         quitAuxiliaryThreads = b;
     }
 
-    private synchronized boolean getQuitAuxiliaryThreads() {
+    private synchronized boolean quitAuxiliaryThreads() {
         return quitAuxiliaryThreads;
     }
 
@@ -63,7 +63,7 @@ public class DynamicThreadpool {
                         r = queue.removeFirst();
                     }
                     r.run();
-                    if (getQuitAuxiliaryThreads() == true && pool.size() > poolsize) {
+                    if (quitAuxiliaryThreads() == true && pool.size() > poolsize) {
                         break;
                     }
                 }

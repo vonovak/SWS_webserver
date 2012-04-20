@@ -36,11 +36,18 @@ public class Webserver {
     }
 
     protected void handleNewClient() throws IOException {
+
         while (true) {
             Socket cs = ss.accept();
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Webserver.class.getName()).log(Level.SEVERE, null, ex);
+            }
             System.out.println("client socket accepted");
             pool.execute(new ClientHandler(cs));
         }
+
     }
 
     protected class ClientHandler implements Runnable {
@@ -125,6 +132,7 @@ public class Webserver {
             } else {
                 out.writeBytes(msgSource);
             }
+
             out.close();
         }
 
